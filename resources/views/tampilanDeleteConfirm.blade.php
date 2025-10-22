@@ -15,7 +15,6 @@
     <p><strong>Username:</strong> {{ $user['username'] }}</p>
     <p><strong>Email:</strong> {{ $user['email'] }}</p>
 
-    {{-- Form untuk aksi hapus yang sebenarnya (menggunakan POST) --}}
     <form action="{{ route('user.delete', ['id' => $user['id']]) }}" method="post" style="display: inline-block;">
         @csrf
         <button type="submit" style="color: red;">Ya, Hapus</button>

@@ -10,11 +10,9 @@
 <body>
     <h1>Edit Pengguna #{{ $user['id'] }}</h1>
     
-    {{-- Mengarahkan ke aksi edit dengan ID yang benar --}}
     <form action="{{ route('user.edit', ['id' => $user['id']]) }}" method="post">
         @csrf
-        {{-- Tidak perlu input hidden id jika sudah ada di URL, tapi tidak masalah jika ada --}}
-        
+
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="{{ old('username', $user['username']) }}" required><br><br>
         

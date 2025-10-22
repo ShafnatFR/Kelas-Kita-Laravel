@@ -12,7 +12,7 @@
     
     <a href="{{ route('user.createView') }}">
         <button>Tambah Pengguna Baru</button>
-    </a>
+    </a> 
     <br><br>
     
     <table border="1">
@@ -36,8 +36,7 @@
                     <a href="{{ route('user.editView', ['id' => $user['id']]) }}"> 
                         <button>Edit</button>
                     </a>
-
-                    {{-- Mengarahkan ke tampilan konfirmasi delete --}}
+                    
                     <a href="{{ route('user.deleteView', ['id' => $user['id']]) }}">
                         <button>Hapus</button>
                     </a>

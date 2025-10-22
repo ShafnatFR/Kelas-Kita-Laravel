@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 class kelolaUser extends Controller
 {
-    // Data default. Akan digunakan jika tidak ada data di session.
+
     protected static array $defaultUsers = [
         [
             'id' => 1,
@@ -23,19 +23,15 @@ class kelolaUser extends Controller
         ],
     ];
 
-    // Fungsi untuk mendapatkan status array terbaru (dari session atau default)
     private function getCurrentUsers(Request $request): Collection
     {
-        // Menggunakan 'get' untuk data persisten di session
-        $users = $request->session()->get('persisted_users') ?? self::$defaultUsers;
+        $users = $request->session()->get('dataSession') ?? self::$defaultUsers;
         return collect($users);
     }
     
-    // Fungsi untuk menyimpan status array terbaru ke session
     private function updateUsersInSession(Request $request, Collection $users): void
     {
-        // Menggunakan 'put' untuk menyimpan data, bukan 'flash'
-        $request->session()->put('persisted_users', $users->toArray());
+        $request->session()->put('dataSession', $users->toArray());
     }
 
     public function showUser(Request $request)
@@ -50,12 +46,10 @@ class kelolaUser extends Controller
         return view('tampilanCreate');
     }
 
-    // --- CREATE ACTION (Menyimpan Data Baru) ---
     public function storeUser(Request $request)
     {
         $users = $this->getCurrentUsers($request);
         
-        // Buat ID baru: ID maksimal + 1
         $newId = $users->isNotEmpty() ? $users->max('id') + 1 : 1;
 
         $newUser = [
@@ -71,7 +65,6 @@ class kelolaUser extends Controller
         return redirect('/')->with('success', 'Pengguna baru berhasil ditambahkan!');
     }
     
-    // --- EDIT VIEW (Menampilkan Form Edit) ---
     public function editUserView(Request $request, $id)
     {
         $users = $this->getCurrentUsers($request);
@@ -84,17 +77,14 @@ class kelolaUser extends Controller
         return view('tampilanEdit', ['user' => $user]);
     }
 
-    // --- EDIT ACTION (Memperbarui Data) ---
     public function editUser(Request $request, $id)
     {
         $id = (int) $id;
         $users = $this->getCurrentUsers($request);
         $found = false;
 
-        // Menggunakan Collection::map untuk mengubah elemen di dalam Collection secara aman
         $users = $users->map(function (array $user) use ($id, $request, &$found) {
             if ($user['id'] === $id) {
-                // Modifikasi data user
                 $user['username'] = $request->input('username');
                 $user['email']    = $request->input('email');
                 $user['role']     = $request->input('role');
@@ -111,7 +101,6 @@ class kelolaUser extends Controller
         return redirect('/')->with('error', 'Pengguna tidak ditemukan!');
     }
 
-    // --- DELETE VIEW (Menampilkan Konfirmasi Hapus) ---
     public function deleteUserView(Request $request, $id)
     {
         $users = $this->getCurrentUsers($request);
@@ -124,14 +113,12 @@ class kelolaUser extends Controller
         return view('tampilanDeleteConfirm', ['user' => $user]);
     }
     
-    // --- DELETE ACTION (Menghapus Data) ---
     public function deleteUser(Request $request, $id)
     {
         $id = (int) $id;
         $users = $this->getCurrentUsers($request);
 
         $usersBefore = $users->count();
-        // Menggunakan Collection::reject untuk membuat Collection baru tanpa elemen yang dihapus
         $newUsers = $users->reject(fn ($item) => $item['id'] === $id)->values(); 
         
         if ($newUsers->count() < $usersBefore) {

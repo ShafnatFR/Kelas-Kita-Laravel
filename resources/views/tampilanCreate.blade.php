@@ -21,9 +21,6 @@
         
         <label for="role">Role (default 'user'):</label>
         <input type="text" id="role" name="role" value="{{ old('role', 'user') }}" required><br><br>
-        
-        {{-- Karena data tidak persisten, kita tidak perlu field password yang di-hash --}}
-        <p style="font-style: italic; color: gray;">Catatan: Karena menggunakan array, password tidak disimpan/diproses.</p><br>
 
         <button type="submit">Tambah Pengguna</button>
         <a href="{{ route('user.index') }}"><button type="button">Batal</button></a>
