@@ -8,16 +8,24 @@
 </head>
 
 <body>
-    <form action="/user/{{$user['id']}}/edit" method="post">
+    <h1>Edit Pengguna #{{ $user['id'] }}</h1>
+    
+    {{-- Mengarahkan ke aksi edit dengan ID yang benar --}}
+    <form action="{{ route('user.edit', ['id' => $user['id']]) }}" method="post">
         @csrf
-        <input type="hidden" name="id" value="{{ $user['id'] }}">
+        {{-- Tidak perlu input hidden id jika sudah ada di URL, tapi tidak masalah jika ada --}}
+        
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{ $user['username'] }}"><br><br>
+        <input type="text" id="username" name="username" value="{{ old('username', $user['username']) }}" required><br><br>
+        
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ $user['email'] }}"><br><br>
+        <input type="email" id="email" name="email" value="{{ old('email', $user['email']) }}" required><br><br>
+        
         <label for="role">Role:</label>
-        <input type="text" id="role" name="role" value="{{ $user['role'] }}"><br><br>
+        <input type="text" id="role" name="role" value="{{ old('role', $user['role']) }}" required><br><br>
+        
         <button type="submit">Simpan Perubahan</button>
+        <a href="{{ route('user.index') }}"><button type="button">Batal</button></a>
     </form>
 </body>
 

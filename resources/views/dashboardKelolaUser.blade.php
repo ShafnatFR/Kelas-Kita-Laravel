@@ -9,6 +9,12 @@
 
 <body>
     <h1>Dashboard Kelola User</h1>
+    
+    <a href="{{ route('user.createView') }}">
+        <button>Tambah Pengguna Baru</button>
+    </a>
+    <br><br>
+    
     <table border="1">
         <thead>
             <tr>
@@ -27,13 +33,14 @@
                 <td>{{$user['email']}}</td>
                 <td>{{$user['role']}}</td>
                 <td>
-<a href="{{ route('user.editView', ['id' => $user->id]) }}"> 
-    <button>Edit</button>
-</a>
+                    <a href="{{ route('user.editView', ['id' => $user['id']]) }}"> 
+                        <button>Edit</button>
+                    </a>
 
-<a href="{{ route('user.deleteView', ['id' => $user->id]) }}">
-    <button>Hapus</button>
-</a>
+                    {{-- Mengarahkan ke tampilan konfirmasi delete --}}
+                    <a href="{{ route('user.deleteView', ['id' => $user['id']]) }}">
+                        <button>Hapus</button>
+                    </a>
                 </td>
             </tr>
             @endforeach
